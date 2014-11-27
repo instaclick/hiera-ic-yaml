@@ -1,5 +1,11 @@
-Installation
-============
+# hiera-ic-yaml
+
+[![Build Status](https://travis-ci.org/instaclick/hiera-ic-yaml.png?branch=master)](https://travis-ci.org/instaclick/hiera-ic-yaml)
+
+A Hiera yaml backend that support imports
+
+
+## Installation
 
 `gem install hiera-ic-yaml`
 
@@ -9,8 +15,7 @@ or
 `gem install --local /path-to/pkg/hiera-ic-yaml-{version}.gem`
 
 
-Configuration
-=============
+## Configuration
 Here is a sample hiera.yaml file that will work with ic_yaml
 
 
