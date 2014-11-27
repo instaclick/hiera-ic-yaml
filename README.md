@@ -11,7 +11,7 @@ or
 
 Configuration
 =============
-Here is a sample hiera.yaml file that will work with ic_yaml and fall back to yaml
+Here is a sample hiera.yaml file that will work with ic_yaml
 
 
 `cat /etc/puppet/hiera.yaml`
