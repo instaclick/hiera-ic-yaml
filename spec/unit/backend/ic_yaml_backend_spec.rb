@@ -26,7 +26,7 @@ class Hiera
           :backends => "ic_yaml",
           :ic_yaml  => {
             :imports_key => 'imports',
-            :datadir     => File.absolute_path(File.dirname(__FILE__) + "../../../fixtures"),
+            :datadir     => File.expand_path(File.dirname(__FILE__) + "../../../fixtures"),
           }
         })
         Hiera.stubs(:debug)
