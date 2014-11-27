@@ -1,0 +1,6 @@
+pkg
+ext/packaging
+.bundle/
+vendor/
+Gemfile.local
+/.project

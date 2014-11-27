@@ -1,0 +1,7 @@
+imports:
+    - "class1.yaml"
+    - "class2.yaml"
+
+classes:
+    - class1
+    - class2
