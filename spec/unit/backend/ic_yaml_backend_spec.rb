@@ -25,8 +25,9 @@ class Hiera
         Config.load({
           :backends => "ic_yaml",
           :ic_yaml  => {
-            :imports_key => 'imports',
-            :datadir     => File.expand_path(File.dirname(__FILE__) + "../../../fixtures"),
+            :imports_key    => 'imports',
+            :parameters_key => 'parameters',
+            :datadir        => File.expand_path(File.dirname(__FILE__) + "../../../fixtures"),
           }
         })
         Hiera.stubs(:debug)
@@ -51,6 +52,20 @@ class Hiera
           @backend.lookup("class1::val1", {}, nil, :priority).should == "Value 1"
         end
 
+        it "should keep params" do
+          Backend.expects(:datasourcefiles).with(:ic_yaml, {}, "yaml", nil).yields(["one", "/nonexisting/one.yaml"])
+          @cache.value = "
+imports: [class_param.yaml]
+parameters:
+    '::param_val1': 'role val1'
+    '::param_val2': 'role val2'
+"
+          @backend.lookup("class_param::config", {}, nil, :priority).should == {
+            "val1"=>"role val1",
+            "val2"=>"role val2",
+          }
+        end
+
         it "should ignore non existing import files" do
           Backend.expects(:datasourcefiles).with(:ic_yaml, {}, "yaml", nil).yields(["one", "/nonexisting/one.yaml"])
           @cache.value = "imports: [nonexisting.yaml]"
@@ -64,11 +79,11 @@ class Hiera
       describe "#load_yaml_file" do
         it "should load files" do
           @backend.load_yaml_file("role1.yaml", {}).should == {
-            "classes"      => ["class1", "class2"],
-            "class2::val1" => "Value 1",
-            "class2::val2" => "Value 2",
-            "class1::val1" => "Value 1",
-            "class1::val2" => "Value 2"
+            "classes"        => ["class1", "class2"],
+            "class2::val1"   => "Value 1",
+            "class2::val2"   => "Value 2",
+            "class1::val1"   => "Value 1",
+            "class1::val2"   => "Value 2",
           }
         end
       end

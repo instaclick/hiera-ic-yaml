@@ -47,6 +47,20 @@ class Hiera
         return '__imports__'
       end
 
+      def parameters_key()
+        config = ic_yaml_config()
+
+        if config[:parameters_key]
+            return config[:parameters_key]
+        end
+
+        if config['parameters_key']
+            return config['parameters_key']
+        end
+
+        return '__parameters__'
+      end
+
       def merge_yaml(overriding, other)
          Backend.merge_answer(overriding, other)
       end
@@ -76,7 +90,8 @@ class Hiera
             imports = {}
 
             config[imports_key].each { |f|
-               imports = merge_yaml(load_yaml_file(f, scope), imports)
+                element = load_yaml_file(f, scope)
+                imports = merge_yaml(element, imports)
             }
 
             config = merge_yaml(config, imports)
@@ -100,6 +115,9 @@ class Hiera
           next if data.empty?
           next unless data.include?(key)
 
+          parameters_key = parameters_key()
+          parameters     = data[parameters_key] || {}
+
           # Extra logging that we found the key. This can be outputted
           # multiple times if the resolution type is array or hash but that
           # should be expected as the logging will then tell the user ALL the
@@ -111,7 +129,7 @@ class Hiera
           # the array
           #
           # for priority searches we break after the first found data item
-          new_answer = Backend.parse_answer(data[key], scope)
+          new_answer = Backend.parse_answer(data[key], scope, parameters)
           case resolution_type
           when :array
             raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String

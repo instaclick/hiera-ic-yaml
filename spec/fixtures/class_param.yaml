@@ -1,0 +1,3 @@
+class_param::config:
+    val1: '%{::param_val1}'
+    val2: '%{::param_val2}'
