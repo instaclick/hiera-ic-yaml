@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/instaclick/hiera-ic-yaml.png?branch=master)](https://travis-ci.org/instaclick/hiera-ic-yaml)
 
+[![Gem Version](https://badge.fury.io/rb/hiera-ic-yaml.svg)](http://badge.fury.io/rb/hiera-ic-yaml)
+
 A Hiera yaml backend that support imports
 
 
