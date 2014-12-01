@@ -14,6 +14,7 @@ A Hiera yaml backend that support imports
 or
 
 `rake gem`
+
 `gem install --local /path-to/pkg/hiera-ic-yaml-{version}.gem`
 
 
