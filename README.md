@@ -9,6 +9,9 @@ A Hiera yaml backend that support imports
 
 ## Installation
 
+#### This gem requires hiera >= 1.3.4
+
+
 `gem install hiera-ic-yaml`
 
 or
