@@ -33,6 +33,18 @@ class Hiera
         return file
       end
 
+      def parameters(data)
+        key        = parameters_key()
+        values     = data[key] || {}
+        parameters = {}
+
+        values.each_pair do |k,v|
+          parameters["::#{k}"] = v
+        end
+
+        return parameters
+      end
+
       def imports_key()
         config = ic_yaml_config()
 
@@ -115,9 +127,6 @@ class Hiera
           next if data.empty?
           next unless data.include?(key)
 
-          parameters_key = parameters_key()
-          parameters     = data[parameters_key] || {}
-
           # Extra logging that we found the key. This can be outputted
           # multiple times if the resolution type is array or hash but that
           # should be expected as the logging will then tell the user ALL the
@@ -129,7 +138,7 @@ class Hiera
           # the array
           #
           # for priority searches we break after the first found data item
-          new_answer = Backend.parse_answer(data[key], scope, parameters)
+          new_answer = Backend.parse_answer(data[key], scope, parameters(data))
           case resolution_type
           when :array
             raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String

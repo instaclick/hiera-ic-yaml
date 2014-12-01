@@ -57,8 +57,8 @@ class Hiera
           @cache.value = "
 imports: [class_param.yaml]
 parameters:
-    '::param_val1': 'role val1'
-    '::param_val2': 'role val2'
+    param_val1: 'role val1'
+    param_val2: 'role val2'
 "
           @backend.lookup("class_param::config", {}, nil, :priority).should == {
             "val1"=>"role val1",
