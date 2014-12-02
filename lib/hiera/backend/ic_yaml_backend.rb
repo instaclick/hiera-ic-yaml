@@ -1,8 +1,6 @@
 class Hiera
   module Backend
-
     class Ic_yaml_backend
-
       def initialize(cache=nil)
         require 'yaml'
         Hiera.debug("Hiera IC YAML backend starting")
@@ -74,7 +72,27 @@ class Hiera
       end
 
       def merge_yaml(overriding, other)
-         Backend.merge_answer(overriding, other)
+
+        if !overriding.kind_of?(Hash) && !overriding.kind_of?(Array)
+            return overriding || other
+        end
+
+        if overriding.kind_of?(Array) && other.kind_of?(Array)
+            return overriding.concat(other).uniq
+        end
+
+        if !overriding.kind_of?(Hash)
+            return overriding || other
+        end
+
+        result = {}
+
+        overriding.each_pair do |key, overriding_val|
+          other_val   = other[key] || overriding_val
+          result[key] = merge_yaml(overriding_val, other_val)
+        end
+
+        return other.merge(result)
       end
 
       def load_yaml_file(path, scope)
@@ -118,7 +136,11 @@ class Hiera
 
         Hiera.debug("Hiera IC YAML Looking up #{key} in YAML backend")
 
-        Backend.datasourcefiles(:ic_yaml, scope, "yaml", order_override) do |source, yamlfile|
+        Backend.datasources(scope, order_override) do |source|
+          Hiera.debug("Looking for data source #{source}")
+          yamlfile = Backend.datafile(:ic_yaml, scope, source, "yaml") || next
+
+          next unless File.exist?(yamlfile)
 
           data = @cache.read_file(yamlfile, Hash) do |data|
             load_yaml_data(data, scope)
@@ -155,12 +177,6 @@ class Hiera
         end
 
         return answer
-      end
-
-      private
-
-      def file_exists?(path)
-        File.exist? path
       end
     end
   end

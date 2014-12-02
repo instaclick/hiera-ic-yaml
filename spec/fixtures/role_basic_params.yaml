@@ -1,0 +1,6 @@
+imports:
+    - "class_param.yaml"
+
+parameters:
+    param_val1: 'role val1'
+    param_val2: 'role val2'

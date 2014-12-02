@@ -1,0 +1,8 @@
+class_merge::map:
+    'key1':
+        val1: '%{::param_val1}'
+        val2: '%{::param_val2}'
+
+class_merge::list:
+    - 'param'
+    - '%{::param_val1}'

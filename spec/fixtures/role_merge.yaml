@@ -1,0 +1,10 @@
+imports:
+    - "class_merge1.yaml"
+    - "class_merge2.yaml"
+
+classes:
+    - class_merge
+
+parameters:
+    param_val1: 'role val1'
+    param_val2: 'role val2'

@@ -5,7 +5,7 @@ require 'rspec/core/rake_task'
 
 spec = Gem::Specification.new do |gem|
     gem.name         = "hiera-ic-yaml"
-    gem.version      = "1.1.0"
+    gem.version      = "1.2.0"
     gem.summary      = "ic yaml backend"
     gem.email        = "fabio.bat.silva@gmail.com"
     gem.author       = "Fabio B. Silva"
