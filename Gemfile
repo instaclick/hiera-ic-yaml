@@ -1,6 +1,6 @@
 source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
-gem "hiera", "1.3.0"
+gem "hiera", ">= 1.3"
 
 group :development do
   gem 'watchr'

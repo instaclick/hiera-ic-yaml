@@ -13,7 +13,7 @@ spec = Gem::Specification.new do |gem|
     gem.description  = "Hiera yaml backend that support imports and parameters"
     gem.require_path = "lib"
     gem.files        = FileList["lib/**/*"].to_a
-    gem.add_runtime_dependency 'hiera', '1.3.0'
+    gem.add_runtime_dependency 'hiera', '>= 1.3'
 end
 
 Gem::PackageTask.new(spec) do |pkg|
