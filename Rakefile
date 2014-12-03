@@ -10,9 +10,10 @@ spec = Gem::Specification.new do |gem|
     gem.email        = "fabio.bat.silva@gmail.com"
     gem.author       = "Fabio B. Silva"
     gem.homepage     = "http://github.com/instaclick/hiera-ic-yaml"
-    gem.description  = "Hiera yaml backend that support imports"
+    gem.description  = "Hiera yaml backend that support imports and parameters"
     gem.require_path = "lib"
     gem.files        = FileList["lib/**/*"].to_a
+    gem.add_runtime_dependency 'hiera', '1.3.0'
 end
 
 Gem::PackageTask.new(spec) do |pkg|

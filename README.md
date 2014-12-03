@@ -36,9 +36,25 @@ Here is a sample hiera.yaml file that will work with ic_yaml
 
 :ic_yaml:
   :datadir: '/etc/puppet/nodes'
+  :parameters_key: 'parameters'
   :imports_key: 'imports'
 ```
 
+`cat /etc/puppet/hieradata/class1.yaml`
+```yaml
+---
+class1:parameter_list:
+    - %{::parameter_one}
+    - %{::parameter_two}
+```
+
+`cat /etc/puppet/hieradata/class2.yaml`
+```yaml
+---
+class2:parameter_list:
+    - %{::parameter_one}
+    - %{::parameter_two}
+```
 
 `cat /etc/puppet/hieradata/role1.yaml`
 ```yaml
@@ -50,4 +66,8 @@ imports:
 classes:
     - class1
     - class2
+
+parameters:
+    parameter_one: 1
+    parameter_two: 2
 ```
