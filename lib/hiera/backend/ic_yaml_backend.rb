@@ -31,12 +31,17 @@ class Hiera
         return file
       end
 
-      def parameters(data)
+      def parameters(data, scope)
         key        = parameters_key()
         values     = data[key] || {}
         parameters = {}
 
         values.each_pair do |k,v|
+
+          if v.kind_of?(String)
+            v = Backend.parse_string(v, scope)
+          end
+
           parameters["::#{k}"] = v
         end
 
@@ -160,7 +165,7 @@ class Hiera
           # the array
           #
           # for priority searches we break after the first found data item
-          new_answer = Backend.parse_answer(data[key], scope, parameters(data))
+          new_answer = Backend.parse_answer(data[key], scope, parameters(data, scope))
           case resolution_type
           when :array
             raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String

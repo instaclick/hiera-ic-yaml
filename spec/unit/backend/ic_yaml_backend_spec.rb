@@ -112,6 +112,22 @@ class Hiera
       end
 
       describe "#lookup" do
+        it "should parse parameters using scope variables" do
+          scope = {"::username" => "root"}
+          Backend.expects(:datasources).yields("one")
+          Backend.expects(:datafile).with(:ic_yaml, scope, "one", "yaml").returns("/nonexisting/one.yaml")
+          File.stubs(:exist?).with("/nonexisting/one.yaml").returns(true)
+
+          @cache.expects(:read_file).with("/nonexisting/one.yaml", Hash).returns({
+            "key" => "%{::database_name}",
+            "parameters"  => {
+              "database_name" => "%{::username}_db",
+            }
+          })
+
+          @backend.lookup("key", scope, nil, :priority).should == "root_db"
+        end
+
         it "should look for data in all sources" do
           Backend.expects(:datasources).multiple_yields(["one"], ["two"])
           Backend.expects(:datafile).with(:ic_yaml, {}, "one", "yaml").returns(nil)
