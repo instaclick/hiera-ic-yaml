@@ -43,6 +43,24 @@ class Hiera
         end
       end
 
+      describe "#create_filecache" do
+        it "should create Filecache by default" do
+          @backend.create_filecache().kind_of?(Filecache).should == true
+        end
+
+        it "should create Filecache when cacheable" do
+          Config[:ic_yaml][:cacheable] = true
+
+          @backend.create_filecache().kind_of?(Filecache).should == true
+        end
+
+        it "should create Filenocache when not cacheable" do
+          Config[:ic_yaml][:cacheable] = false
+
+          @backend.create_filecache().kind_of?(Filenocache).should == true
+        end
+      end
+
       describe "#load_yaml_file" do
 
         it "should load files" do

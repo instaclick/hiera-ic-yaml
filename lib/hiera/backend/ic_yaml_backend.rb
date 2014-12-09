@@ -1,3 +1,6 @@
+require 'hiera/filenocache'
+require 'hiera/filecache'
+
 class Hiera
   module Backend
     class Ic_yaml_backend
@@ -5,7 +8,7 @@ class Hiera
         require 'yaml'
         Hiera.debug("Hiera IC YAML backend starting")
 
-        @cache = cache || Filecache.new
+        @cache = cache || create_filecache()
       end
 
       def ic_yaml_config()
@@ -60,6 +63,20 @@ class Hiera
         end
 
         return '__imports__'
+      end
+
+      def create_filecache()
+        config = ic_yaml_config()
+
+        if !config.has_key?('cacheable') && !config.has_key?(:cacheable)
+            return Hiera::Filecache.new
+        end
+
+        if config[:cacheable] || config[:cacheable]
+            return Hiera::Filecache.new
+        end
+
+        return Hiera::Filenocache.new
       end
 
       def parameters_key()
